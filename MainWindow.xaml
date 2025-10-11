@@ -1,0 +1,38 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:webview="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        mc:Ignorable="d"
+        x:Class="TestAvalonia.MainWindow"
+        Title="TestAvalonia" Height="800" Width="1200">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <StackPanel Grid.Column="0" Background="LightGray" Margin="10">
+            <TextBlock Text="Sidebar" FontSize="20" />
+            <TextBlock Text="Navigation or controls here." />
+        </StackPanel>
+
+        <!-- Main Grid -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <webview:WebView2 Grid.Row="0" Grid.Column="0" Source="https://www.google.com" />
+            <webview:WebView2 Grid.Row="0" Grid.Column="1" Source="https://www.youtube.com" />
+            <webview:WebView2 Grid.Row="1" Grid.Column="0" Source="https://www.github.com" />
+            <webview:WebView2 Grid.Row="1" Grid.Column="1" Source="https://www.stackoverflow.com" />
+        </Grid>
+    </Grid>
+</Window>
