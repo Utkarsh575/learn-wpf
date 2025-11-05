@@ -1,8 +1,62 @@
 <Application xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TestAvalonia"
              x:Class="TestAvalonia.App"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Colors inspired by glue-figma -->
+        <Color x:Key="PrimaryColor">#d71e28</Color>
+        <Color x:Key="AccentColor">#ffcd41</Color>
+        <Color x:Key="BackgroundColor">#fafafa</Color>
+        <Color x:Key="ForegroundColor">#231f20</Color>
+        <SolidColorBrush x:Key="WindowBackground" Color="#fafafa" />
+        <SolidColorBrush x:Key="PaneBackground" Color="#FFFFFF" />
+        <SolidColorBrush x:Key="PaneBorder" Color="#e0e0e0" />
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#d71e28" />
+        <SolidColorBrush x:Key="AccentBrush" Color="#ffcd41" />
+        <SolidColorBrush x:Key="ForegroundBrush" Color="#231f20" />
+        <Style TargetType="Button" x:Key="IconButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+            <Setter Property="Padding" Value="6" />
+        </Style>
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="Background" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBrush}" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Margin" Value="4" />
+        </Style>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="Padding" Value="4" />
+        </Style>
+        <HierarchicalDataTemplate DataType="{x:Type local:Workflow}" ItemsSource="{Binding Tasks}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" FontWeight="Bold" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <HierarchicalDataTemplate DataType="{x:Type local:TaskItem}" ItemsSource="{Binding Steps}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" Margin="0,0,6,0" />
+                <TextBlock Text="{Binding Name}" />
+                <ProgressBar Value="{Binding Progress}" Width="50" Height="10" Margin="8,0" />
+            </StackPanel>
+        </HierarchicalDataTemplate>
+        <DataTemplate DataType="{x:Type local:Step}">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}" Margin="0,0,6,0" />
+                <TextBlock Text="{Binding Name}" />
+                <ProgressBar Value="{Binding Progress}" Width="50" Height="10" Margin="8,0" />
+            </StackPanel>
+        </DataTemplate>
+
+        <!-- Animation for sidebar collapse/expand -->
+        <Storyboard x:Key="CollapseSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarColumn" Storyboard.TargetProperty="Width" To="48" Duration="0:0:0.3" />
+        </Storyboard>
+        <Storyboard x:Key="ExpandSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarColumn" Storyboard.TargetProperty="Width" To="240" Duration="0:0:0.3" />
+        </Storyboard>
     </Application.Resources>
 </Application>

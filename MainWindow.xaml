@@ -3,36 +3,87 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:webview="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:local="clr-namespace:TestAvalonia"
         mc:Ignorable="d"
         x:Class="TestAvalonia.MainWindow"
-        Title="TestAvalonia" Height="800" Width="1200">
+        Title="GLUE" Height="800" Width="1200"
+        Background="{StaticResource WindowBackground}"
+        Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <!-- Animation for sidebar collapse/expand -->
+        <Storyboard x:Key="CollapseSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarColumn" Storyboard.TargetProperty="Width" To="48" Duration="0:0:0.3" />
+        </Storyboard>
+        <Storyboard x:Key="ExpandSidebar">
+            <DoubleAnimation Storyboard.TargetName="SidebarColumn" Storyboard.TargetProperty="Width" To="240" Duration="0:0:0.3" />
+        </Storyboard>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
+            <!-- named column so code-behind can toggle width -->
+            <ColumnDefinition x:Name="SidebarColumn" Width="240" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <StackPanel Grid.Column="0" Background="LightGray" Margin="10">
-            <TextBlock Text="Sidebar" FontSize="20" />
-            <TextBlock Text="Navigation or controls here." />
-        </StackPanel>
+        <Border Grid.Column="0" Background="{StaticResource PaneBackground}" BorderBrush="{StaticResource PaneBorder}" BorderThickness="0,0,1,0">
+            <Grid Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <!-- Main Grid -->
-        <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Top" Grid.Row="0" Margin="0,0,0,12">
+                    <TextBlock Text="GLUE" FontSize="16" FontWeight="Bold" Foreground="{StaticResource ForegroundBrush}" VerticalAlignment="Center" />
+                    <Button x:Name="ToggleSidebarButton" Click="ToggleSidebarButton_Click" Style="{StaticResource IconButton}" HorizontalAlignment="Right" Margin="8,0,0,0">☰</Button>
+                </StackPanel>
+
+                <Button x:Name="OpenAllTasksButton" Content="Open All Tasks" Click="OpenAllTasksButton_Click" Style="{StaticResource PrimaryButton}" Grid.Row="1" Margin="0,6" />
+
+                <TreeView x:Name="WorkflowTreeView" Grid.Row="2" SelectedItemChanged="WorkflowTreeView_SelectedItemChanged" />
+            </Grid>
+        </Border>
+
+        <!-- Main area -->
+        <Grid Grid.Column="1" Background="{StaticResource WindowBackground}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
 
-            <webview:WebView2 Grid.Row="0" Grid.Column="0" Source="https://www.google.com" />
-            <webview:WebView2 Grid.Row="0" Grid.Column="1" Source="https://www.youtube.com" />
-            <webview:WebView2 Grid.Row="1" Grid.Column="0" Source="https://www.github.com" />
-            <webview:WebView2 Grid.Row="1" Grid.Column="1" Source="https://www.stackoverflow.com" />
+            <!-- Top bar with URL entry -->
+            <Border Grid.Row="0" Background="{StaticResource PaneBackground}" BorderBrush="{StaticResource PaneBorder}" BorderThickness="0,0,0,1">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" /> <!-- workflow buttons -->
+                        <ColumnDefinition Width="Auto" /> <!-- URL label -->
+                        <ColumnDefinition Width="*" />   <!-- URL textbox -->
+                        <ColumnDefinition Width="Auto" /> <!-- go button -->
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="6" Grid.Column="0">
+                        <Button x:Name="LoadWorkflowButton" Content="Load Workflow" Click="LoadWorkflowButton_Click" Margin="0,0,8,0" />
+                        <Button x:Name="CreateWorkflowButton" Content="Create Workflow" Click="CreateWorkflowButton_Click" Margin="0,0,8,0" />
+                        <Button x:Name="ShareButton" Content="Share" Click="ShareButton_Click" />
+                        <Button x:Name="MarkStepCompleteButton" Content="Mark Step Complete" Click="MarkStepCompleteButton_Click" Margin="8,0,0,0" />
+                        <Button x:Name="MarkTaskCompleteButton" Content="Mark Task Complete" Click="MarkTaskCompleteButton_Click" Margin="8,0,0,0" />
+                    </StackPanel>
+
+                    <TextBlock Text="URL:" VerticalAlignment="Center" Foreground="{StaticResource ForegroundBrush}" Margin="6" Grid.Column="1" />
+                    <TextBox x:Name="UrlTextBox" Grid.Column="2" Margin="6" VerticalAlignment="Center" MinWidth="200" />
+                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                        <Button x:Name="GoButton" Content="Go" Click="GoButton_Click" Margin="6" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Web view fills available area (single view) -->
+            <Grid Grid.Row="1">
+                <webview:WebView2 x:Name="MainView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>

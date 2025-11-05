@@ -1,0 +1,27 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.tmp
+*.log
+*.vs/
+*.vscode/
+
+# WebView2
+# Usually no specific ignores, but if you have local WebView2 files, add here
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# Build outputs
+*.exe
+*.dll
+*.pdb
+*.cache
